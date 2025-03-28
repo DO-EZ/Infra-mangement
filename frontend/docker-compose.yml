@@ -1,0 +1,35 @@
+version: '3.8'  
+  
+services:  
+  fe-blue:  
+    image: react-nginx-app:latest  
+    build:  
+      context: .  
+      dockerfile: Dockerfile  
+    ports:  
+      - "8080:80"  
+    deploy:  
+      replicas: 2  
+      restart_policy:  
+        condition: on-failure  
+      labels:  
+        - "traefik.http.routers.fe-blue.rule=Host(`frontend.example.com`) && PathPrefix(`/blue`)"  
+        - "traefik.http.services.fe-blue.loadbalancer.server.port=80"  
+    networks:  
+      - traefik-network  
+  
+  # fe-green:  
+  #   image: react-nginx-app:green  
+  #   deploy:  
+  #     replicas: 2  
+  #     restart_policy:  
+  #       condition: on-failure  
+  #     labels:  
+  #       - "traefik.http.routers.fe-green.rule=Host(`frontend.example.com`) && PathPrefix(`/green`)"  
+  #       - "traefik.http.services.fe-green.loadbalancer.server.port=80"  
+  #   networks:  
+  #     - traefik-network  
+  
+networks:  
+  traefik-network:  
+    external: true  

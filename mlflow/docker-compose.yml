@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.21.2
+
+    ports:
+      - "5000:5000"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.mlflow.rule=Host(`my.mlflow.com`)"
+        - "traefik.http.services.mlflow.loadbalancer.server.port=5000"
+
+    networks:
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true

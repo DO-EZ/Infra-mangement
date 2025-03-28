@@ -1,0 +1,27 @@
+version: '3.8'  
+  
+services:  
+  backend:
+    image: cocopam/captcha-server:latest  
+    ports:
+      - target: 8000
+        published: 8000
+        protocol: tcp
+        mode: host
+    deploy:  
+      replicas: 1
+      restart_policy:  
+        condition: on-failure  
+      labels:  
+        - "traefik.enable=true"
+        - "traefik.http.routers.backend.rule=Host(`0.0.0.0`) && PathPrefix(`/api`)"
+        - "traefik.http.routers.backend.entrypoints=be"
+        - "traefik.http.routers.backend.middlewares=strip-prefix"
+        - "traefik.http.middlewares.strip-prefix.stripprefix.prefixes=/api"
+        - "traefik.http.services.backend.loadbalancer.server.port=8000"
+    networks:  
+      - traefik-network  
+  
+networks:  
+  traefik-network:  
+    external: true 
