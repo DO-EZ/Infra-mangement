@@ -1,15 +1,14 @@
 version: '3.8'  
   
 services:  
-  fe-blue:  
+  frontend:  
     image: react-nginx-app:latest  
-    build:  
-      context: .  
-      dockerfile: Dockerfile  
     ports:  
-      - "8080:80"  
+      - "5600:80"  
     deploy:  
       replicas: 2  
+      placement:
+        constraints: [node.labels.env == prod]
       restart_policy:  
         condition: on-failure  
       labels:  
