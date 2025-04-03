@@ -1,45 +1,28 @@
 version: '3.8'  
   
 services:  
-  frontend-prod:  
+  frontend-prod:
+    name: captcha-frontend-prod  
     image: cocopam/captcha-front:latest  
-    ports:  
-      - "5600:80"  
     deploy:  
       placement:
         constraints: [node.labels.env == prod]
       restart_policy:  
         condition: on-failure  
-      labels:  
-        - "traefik.http.routers.fe-blue.rule=Host(`frontend.example.com`) && PathPrefix(`/blue`)"  
-        - "traefik.http.services.fe-blue.loadbalancer.server.port=80"  
+
     networks:  
       - traefik-network  
   frontend-dev:  
     image: cocopam/captcha-front:latest  
-    ports:  
-      - "5600:80"  
+    ports:
+      - "5600:80"
     deploy:  
       placement:
         constraints: [node.labels.env == dev]
       restart_policy:  
         condition: on-failure  
-      labels:  
-        - "traefik.http.routers.fe-green.rule=Host(`frontend.example.com`) && PathPrefix(`/green`)"  
-        - "traefik.http.services.fe-green.loadbalancer.server.port=80"  
     networks:  
       - traefik-network
-  # fe-green:  
-  #   image: react-nginx-app:green  
-  #   deploy:  
-  #     replicas: 2  
-  #     restart_policy:  
-  #       condition: on-failure  
-  #     labels:  
-  #       - "traefik.http.routers.fe-green.rule=Host(`frontend.example.com`) && PathPrefix(`/green`)"  
-  #       - "traefik.http.services.fe-green.loadbalancer.server.port=80"  
-  #   networks:  
-  #     - traefik-network  
   
 networks:  
   traefik-network:  

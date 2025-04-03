@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    deploy:  
+      replicas: 1  
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "5600:80"         # FE entry point
+    networks:
+      - traefik-network
+
+networks:
+  traefik-network:
+    driver: overlay
+    external: true
