@@ -2,7 +2,7 @@ version: '3.8'
   
 services:  
   frontend:  
-    image: react-nginx-app:latest  
+    image: cocopam/captcha-front:latest  
     ports:  
       - "5600:80"  
     deploy:  
