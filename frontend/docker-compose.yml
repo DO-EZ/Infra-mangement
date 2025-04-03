@@ -2,7 +2,7 @@ version: '3.8'
   
 services:  
   frontend-prod:
-    name: captcha-frontend-prod  
+    name: captcha_frontend_prod  
     image: cocopam/captcha-front:latest  
     deploy:  
       placement:
