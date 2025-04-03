@@ -2,7 +2,6 @@ version: '3.8'
   
 services:  
   backend-prod:
-    name: captcha_backend_prod
     image: cocopam/captcha-server:latest  
     deploy:  
       replicas: 2
