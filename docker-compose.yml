@@ -1,8 +1,8 @@
-version: '3.8'
-
-services:
+version: '3.8'  
+  
+services:  
   nginx:
-    image: nginx:latest
+    image: nginx:stable-alpine-slim
     deploy:  
       placement:
         constraints: [node.role == manager]
@@ -10,11 +10,13 @@ services:
         condition: on-failure
       replicas: 1   
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ingress/nginx.conf:/etc/nginx/nginx.conf
     ports:
-      - "6000:80"         # FE entry point
+      - target: 80
+        published: 6000
     networks:
       - traefik-network
+
 
 networks:
   traefik-network:

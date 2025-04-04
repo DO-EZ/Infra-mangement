@@ -1,0 +1,12 @@
+version: '3.8'  
+  
+services:  
+  frontend:
+    image: cocopam/captcha-front:latest  
+    deploy:  
+      placement:
+        constraints: [node.labels.env == prod]
+      restart_policy:  
+        condition: on-failure  
+    networks:  
+      - traefik-network  
