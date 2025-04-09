@@ -10,7 +10,5 @@ services:
       placement:
         constraints: [node.labels.env == dev]
       restart_policy:  
-        condition: on-failure  
-    networks:  
-      - traefik-network  
+        condition: on-failure   
 
