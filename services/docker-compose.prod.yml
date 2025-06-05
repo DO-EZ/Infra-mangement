@@ -32,10 +32,6 @@ services:
         constraints: [node.labels.ml == true]
       restart_policy:
         condition: on-failure
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.mlflow.rule=Host(`my.mlflow.com`)"
-        - "traefik.http.services.mlflow.loadbalancer.server.port=5000"
     networks:
       - traefik-network
 
