@@ -25,7 +25,8 @@ services:
   mlflow:
     image: bitnami/mlflow:2.22.0
     ports:
-      - "5000:5000"
+      - target: 5000
+        published: 5000
     deploy:
       replicas: 1
       placement:
@@ -51,7 +52,7 @@ services:
       - ./ingress/nginx.conf:/etc/nginx/nginx.conf
     ports:
       - target: 80
-        published: 6000
+        published: 8002
     networks:
       - traefik-network
 
