@@ -5,7 +5,7 @@ services:
     image: nginx:stable-alpine-slim
     deploy:  
       placement:
-        constraints: [node.role == manager]
+        constraints: [node.role == manager and node.labels.ingress == true]
       restart_policy:
         condition: on-failure
       replicas: 1   
