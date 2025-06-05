@@ -34,6 +34,10 @@ services:
         condition: on-failure
     networks:
       - traefik-network
+    entrypoint: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
 
   nginx:
     image: nginx:stable-alpine-slim
