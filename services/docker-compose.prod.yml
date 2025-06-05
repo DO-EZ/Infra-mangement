@@ -14,9 +14,12 @@ services:
 
   frontend:
     image: cocopam/captcha-front:latest
+    ports:
+      - target: 80
+        published: 5001
     deploy:
       placement:
-        constraints: [node.labels.env == prod]
+        constraints: [node.labels.ingress == true]
       restart_policy:
         condition: on-failure
     networks:
