@@ -3,6 +3,8 @@ version: '3.8'
 services:
   backend:
     image: cocopam/captcha-server:latest
+    environment:
+      - REMOTE_ML_SERVICE_URL=http://mlflow:5000
     deploy:
       replicas: 1
       placement:
@@ -19,7 +21,7 @@ services:
         published: 5001
     deploy:
       placement:
-        constraints: [node.labels.ingress == true]
+        constraints: [node.labels.fe == true]
       restart_policy:
         condition: on-failure
     networks:
@@ -36,8 +38,11 @@ services:
         constraints: [node.labels.ml == true]
       restart_policy:
         condition: on-failure
+    volumes:
+      - mlflow-artifacts:/app/mlruns
     networks:
       - traefik-network
+    working_dir: /app
     entrypoint: >
       mlflow server
       --host 0.0.0.0
@@ -63,3 +68,6 @@ networks:
   traefik-network:
     driver: overlay
     external: true 
+volumes:
+  mlflow-artifacts:
+ 
