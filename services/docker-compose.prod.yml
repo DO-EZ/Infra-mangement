@@ -64,6 +64,8 @@ services:
       -p 5001
       --host 0.0.0.0
       --tracking-uri http://mlflow:5000
+    depends_on:
+      - mlflow
 
   nginx:
     image: nginx:stable-alpine-slim
@@ -95,7 +97,7 @@ services:
     networks:
       - traefik-network
     depends_on:
-      - app
+      - backend
   
   grafana:
     image: grafana/grafana:latest
