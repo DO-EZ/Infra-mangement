@@ -47,6 +47,26 @@ services:
       mlflow server
       --host 0.0.0.0
       --port 5000
+  mlflow-model:
+    image: bitnami/mlflow:2.22.0
+    ports:
+      - target: 5001
+        published: 5001
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.labels.ml == true]
+      restart_policy:
+        condition: on-failure
+    networks:
+      - traefik-network
+    working_dir: /app
+    entrypoint: >
+      mlflow models serve
+      -m models:/HybridCNN/latest
+      -p 5001
+      --host 0.0.0.0
+      --tracking-uri http://mlflow:5000
 
   nginx:
     image: nginx:stable-alpine-slim
