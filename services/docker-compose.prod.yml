@@ -49,9 +49,6 @@ services:
       --port 5000
   mlflow-model:
     image: bitnami/mlflow:2.22.0
-    ports:
-      - target: 5001
-        published: 5001
     deploy:
       replicas: 1
       placement:
