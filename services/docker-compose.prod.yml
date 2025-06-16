@@ -65,6 +65,7 @@ services:
       -m models:/HybridCNN/latest
       -p 5001
       --host 0.0.0.0
+      --no-conda
     depends_on:
       - mlflow
 
