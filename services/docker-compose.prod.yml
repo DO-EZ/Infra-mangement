@@ -58,12 +58,13 @@ services:
     networks:
       - traefik-network
     working_dir: /app
+    environment:
+    - MLFLOW_TRACKING_URI=http://mlflow:5000
     entrypoint: >
       mlflow models serve
       -m models:/HybridCNN/latest
       -p 5001
       --host 0.0.0.0
-      --tracking-uri http://mlflow:5000
     depends_on:
       - mlflow
 
