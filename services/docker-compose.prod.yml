@@ -63,6 +63,39 @@ services:
         published: 8002
     networks:
       - traefik-network
+  
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    deploy:
+      placement:
+        constraints: [node.labels.monitor == true]
+    configs:
+      - source: prometheus_config
+        target: /etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    networks:
+      - traefik-network
+    depends_on:
+      - app
+  
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    deploy:
+      placement:
+        constraints: [node.labels.monitor == true]
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - traefik-network
+    depends_on:
+      - prometheus
 
 networks:
   traefik-network:
@@ -70,4 +103,9 @@ networks:
     external: true 
 volumes:
   mlflow-artifacts:
+  grafana-storage:
  
+
+configs:
+  prometheus_config:
+    external: true
