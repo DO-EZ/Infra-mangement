@@ -54,7 +54,7 @@ services:
     deploy:
       replicas: 1
       placement:
-        constraints: [node.labels.ml == true]
+        constraints: [node.labels.model_serve == true]
       restart_policy:
         condition: on-failure
     networks:
