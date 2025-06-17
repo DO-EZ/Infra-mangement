@@ -64,7 +64,7 @@ services:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
     entrypoint: >
       mlflow models serve
-      -m models:/HybridCNN/latest
+      -m models:/HybridCNN@prod
       -p 5001
       --host 0.0.0.0
       --no-conda
