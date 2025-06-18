@@ -60,6 +60,8 @@ services:
     networks:
       - traefik-network
     working_dir: /app
+    volumes:
+      - mlflow-artifacts:/app/mlruns
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
     entrypoint: >
