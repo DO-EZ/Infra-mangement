@@ -4,7 +4,7 @@ services:
   backend:
     image: cocopam/captcha-server:latest
     environment:
-      - REMOTE_ML_SERVICE_URL=http://mlflow-model:5001
+      - REMOTE_ML_SERVICE_URL=http://mlflow-model:5002
     deploy:
       replicas: 1
       placement:
@@ -13,6 +13,8 @@ services:
         condition: on-failure
     networks:
       - traefik-network
+    volumes:
+      - user-images:/app/static/images
 
   frontend:
     image: cocopam/captcha-front:latest
@@ -39,7 +41,8 @@ services:
       restart_policy:
         condition: on-failure
     volumes:
-      - mlflow-artifacts:/app/mlruns
+      - mlflow-runs:/app/mlruns
+      - mlflow-artifacts:/app/mlartifacts
     networks:
       - traefik-network
     working_dir: /app
@@ -48,7 +51,6 @@ services:
       --host 0.0.0.0
       --port 5000
       --backend-store-uri /app/mlruns
-      --default-artifact-root /app/mlruns
   mlflow-model:
     image: cocopam/captcha-mlflow-serve
     deploy:
@@ -60,14 +62,12 @@ services:
     networks:
       - traefik-network
     working_dir: /app
-    volumes:
-      - mlflow-artifacts:/app/mlruns
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
     entrypoint: >
       mlflow models serve
       -m models:/HybridCNN@prod
-      -p 5001
+      -p 5002
       --host 0.0.0.0
       --no-conda
     depends_on:
@@ -121,14 +121,14 @@ services:
       - traefik-network
     depends_on:
       - prometheus
-
 networks:
   traefik-network:
-    driver: overlay
-    external: true 
+
 volumes:
   mlflow-artifacts:
+  mlflow-runs:
   grafana-storage:
+  user-images:
  
 
 configs:
